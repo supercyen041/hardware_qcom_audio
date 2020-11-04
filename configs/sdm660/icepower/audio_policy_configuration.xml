@@ -65,7 +65,7 @@
                 </mixPort>
                 <mixPort name="deep_buffer" role="source"
                         flags="AUDIO_OUTPUT_FLAG_DEEP_BUFFER">
-                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                    <profile name="" format="AUDIO_FORMAT_PCM_32_BIT"
                              samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
                 </mixPort>
                 <mixPort name="raw" role="source"
@@ -81,24 +81,24 @@
                 </mixPort>
                 <mixPort name="direct_pcm" role="source"
                         flags="AUDIO_OUTPUT_FLAG_DIRECT">
-              <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+              <!--  <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
                              samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000,64000,88200,96000,128000,176400,192000"
-                             channelMasks="AUDIO_CHANNEL_OUT_MONO,AUDIO_CHANNEL_OUT_STEREO,AUDIO_CHANNEL_OUT_2POINT1,AUDIO_CHANNEL_OUT_QUAD,AUDIO_CHANNEL_OUT_PENTA,AUDIO_CHANNEL_OUT_5POINT1,AUDIO_CHANNEL_OUT_6POINT1,AUDIO_CHANNEL_OUT_7POINT1"/>
+                             channelMasks="AUDIO_CHANNEL_OUT_MONO,AUDIO_CHANNEL_OUT_STEREO,AUDIO_CHANNEL_OUT_2POINT1,AUDIO_CHANNEL_OUT_QUAD,AUDIO_CHANNEL_OUT_PENTA,AUDIO_CHANNEL_OUT_5POINT1,AUDIO_CHANNEL_OUT_6POINT1,AUDIO_CHANNEL_OUT_7POINT1"/> -->
                     <profile name="" format="AUDIO_FORMAT_PCM_8_24_BIT"
                              samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000,64000,88200,96000,128000,176400,192000,352800,384000"
                              channelMasks="AUDIO_CHANNEL_OUT_MONO,AUDIO_CHANNEL_OUT_STEREO,AUDIO_CHANNEL_OUT_2POINT1,AUDIO_CHANNEL_OUT_QUAD,AUDIO_CHANNEL_OUT_PENTA,AUDIO_CHANNEL_OUT_5POINT1,AUDIO_CHANNEL_OUT_6POINT1,AUDIO_CHANNEL_OUT_7POINT1"/>
                     <profile name="" format="AUDIO_FORMAT_PCM_24_BIT_PACKED"
                              samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000,64000,88200,96000,128000,176400,192000,352800,384000"
                              channelMasks="AUDIO_CHANNEL_OUT_MONO,AUDIO_CHANNEL_OUT_STEREO,AUDIO_CHANNEL_OUT_2POINT1,AUDIO_CHANNEL_OUT_QUAD,AUDIO_CHANNEL_OUT_PENTA,AUDIO_CHANNEL_OUT_5POINT1,AUDIO_CHANNEL_OUT_6POINT1,AUDIO_CHANNEL_OUT_7POINT1"/>
-              <profile name="" format="AUDIO_FORMAT_PCM_32_BIT"
+              <!--  <profile name="" format="AUDIO_FORMAT_PCM_32_BIT"
                              samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000,64000,88200,96000,128000,176400,192000,352800,384000"
-                             channelMasks="AUDIO_CHANNEL_OUT_MONO,AUDIO_CHANNEL_OUT_STEREO,AUDIO_CHANNEL_OUT_2POINT1,AUDIO_CHANNEL_OUT_QUAD,AUDIO_CHANNEL_OUT_PENTA,AUDIO_CHANNEL_OUT_5POINT1,AUDIO_CHANNEL_OUT_6POINT1,AUDIO_CHANNEL_OUT_7POINT1"/>
+                             channelMasks="AUDIO_CHANNEL_OUT_MONO,AUDIO_CHANNEL_OUT_STEREO,AUDIO_CHANNEL_OUT_2POINT1,AUDIO_CHANNEL_OUT_QUAD,AUDIO_CHANNEL_OUT_PENTA,AUDIO_CHANNEL_OUT_5POINT1,AUDIO_CHANNEL_OUT_6POINT1,AUDIO_CHANNEL_OUT_7POINT1"/> -->
                 </mixPort>
                 <mixPort name="compressed_offload" role="source"
                          flags="AUDIO_OUTPUT_FLAG_DIRECT|AUDIO_OUTPUT_FLAG_COMPRESS_OFFLOAD|AUDIO_OUTPUT_FLAG_NON_BLOCKING">
-              <profile name="" format="AUDIO_FORMAT_MP3"
+              <!--  <profile name="" format="AUDIO_FORMAT_MP3"
                              samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000"
-                             channelMasks="AUDIO_CHANNEL_OUT_STEREO,AUDIO_CHANNEL_OUT_MONO"/>
+                             channelMasks="AUDIO_CHANNEL_OUT_STEREO,AUDIO_CHANNEL_OUT_MONO"/> -->
                     <profile name="" format="AUDIO_FORMAT_FLAC"
                              samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000,64000,88200,96000,128000,176400,192000"
                              channelMasks="AUDIO_CHANNEL_OUT_STEREO,AUDIO_CHANNEL_OUT_MONO"/>
@@ -163,13 +163,11 @@
                              samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000"
                              channelMasks="AUDIO_CHANNEL_IN_MONO,AUDIO_CHANNEL_IN_STEREO,AUDIO_CHANNEL_IN_FRONT_BACK"/>
                 </mixPort>
-                <!-- Del by AMT.meng.lv, 04/30/2020, For VOIP call mute during EARPIECE mode after enable google assistant voice recognition issue begin
                 <mixPort name="voip_tx" role="sink"
                          flags="AUDIO_INPUT_FLAG_VOIP_TX">
                     <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
                              samplingRates="8000,16000,32000,48000" channelMasks="AUDIO_CHANNEL_IN_MONO"/>
                 </mixPort>
-                Del by AMT.meng.lv, 04/30/2020, For VOIP call mute during EARPIECE mode after enable google assistant voice recognition issue end -->
                 <mixPort name="surround_sound" role="sink">
                     <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
                              samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000"
@@ -336,10 +334,8 @@
                        sources="Telephony Rx"/>
                 <route type="mix" sink="primary input"
                        sources="Wired Headset Mic,BT SCO Headset Mic,FM Tuner,USB Device In,USB Headset In,Telephony Rx"/>
-                <!-- Del by AMT.meng.lv, 04/30/2020, For VOIP call mute during EARPIECE mode after enable google assistant voice recognition issue begin
                 <route type="mix" sink="voip_tx"
                        sources="Built-In Mic,Built-In Back Mic,BT SCO Headset Mic,USB Device In,USB Headset In"/>
-                Del by AMT.meng.lv, 04/30/2020, For VOIP call mute during EARPIECE mode after enable google assistant voice recognition issue end -->
                 <route type="mix" sink="surround_sound"
                        sources="Built-In Mic,Built-In Back Mic"/>
                 <route type="mix" sink="record_24"

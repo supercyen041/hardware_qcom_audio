@@ -82,7 +82,6 @@ endif
 PRODUCT_COPY_FILES += \
     vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/audio_output_policy.conf:$(TARGET_COPY_OUT_VENDOR)/etc/audio_output_policy.conf \
     vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/audio_effects.conf:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.conf \
-    vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml \
     vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/mixer_paths_skush.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_paths_skush.xml \
     vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/mixer_paths_i2s.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_paths_i2s.xml \
     vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/mixer_paths_tasha.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_paths_tasha.xml \
@@ -107,20 +106,35 @@ PRODUCT_COPY_FILES += \
     vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/sound_trigger_platform_info.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sound_trigger_platform_info.xml \
     vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/graphite_ipc_platform_info.xml:$(TARGET_COPY_OUT_VENDOR)/etc/graphite_ipc_platform_info.xml \
     vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/audio_configs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_configs.xml \
+    vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/tfa98xx.cnt:$(TARGET_COPY_OUT_VENDOR)/firmware/tfa98xx.cnt \
     frameworks/native/data/etc/android.hardware.audio.pro.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.pro.xml \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.low_latency.xml \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
+ifeq ($(ENABLE_ASUS_ICEPOWER_EFFECT),true)
+PRODUCT_COPY_FILES += \
+    $(TOPDIR)frameworks/av/services/audiopolicy/config/icepower/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
+    vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/icepower/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml
+else
+PRODUCT_COPY_FILES += \
+    $(TOPDIR)frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
+    vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml
+endif
+
 #XML Audio configuration files
 ifeq ($(USE_XML_AUDIO_POLICY_CONF), 1)
 ifneq ($(TARGET_USES_AOSP_FOR_AUDIO), true)
+ifeq ($(ENABLE_ASUS_ICEPOWER_EFFECT),true)
+PRODUCT_COPY_FILES += \
+    $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/icepower/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/audio_policy_configuration.xml
+else
 PRODUCT_COPY_FILES += \
     $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/sdm660/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/audio_policy_configuration.xml
+endif
 endif
 PRODUCT_COPY_FILES += \
     $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/common/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
     $(TOPDIR)frameworks/av/services/audiopolicy/config/a2dp_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/a2dp_audio_policy_configuration.xml \
-    $(TOPDIR)frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
     $(TOPDIR)frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
     $(TOPDIR)frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
     $(TOPDIR)frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml \
@@ -140,11 +154,13 @@ PRODUCT_PROPERTY_OVERRIDES += \
     vendor.audio_hal.period_size=192
 
 ##fluencetype can be "fluence" or "fluencepro" or "none"
+# Huaqin add for open double mic function by xudayi at 2018/02/26 start
 PRODUCT_PROPERTY_OVERRIDES += \
-ro.vendor.audio.sdk.fluencetype=none\
+ro.vendor.audio.sdk.fluencetype=fluence\
 persist.vendor.audio.fluence.voicecall=true\
-persist.vendor.audio.fluence.voicerec=false\
-persist.vendor.audio.fluence.speaker=true
+persist.vendor.audio.fluence.voicerec=true\
+persist.vendor.audio.fluence.speaker=false
+# Huaqin add for open double mic function by xudayi at 2018/02/26 end
 
 #disable tunnel encoding
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -175,9 +191,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 audio.deep_buffer.media=true
 
 #enable voice path for PCM VoIP by default
+#Huaqin add for 1174876 by daiweiwei at 2018/4/4 start
 PRODUCT_PROPERTY_OVERRIDES += \
-vendor.voice.path.for.pcm.voip=true
-
+vendor.voice.path.for.pcm.voip=false
+#Huaqin add for 1174876 by daiweiwei at 2018/4/4 end
 #Enable multi channel aac through offload
 PRODUCT_PROPERTY_OVERRIDES += \
 vendor.audio.offload.multiaac.enable=true
@@ -240,7 +257,11 @@ vendor.audio.use.sw.ape.decoder=true
 #enable hw aac encoder by default
 PRODUCT_PROPERTY_OVERRIDES += \
 vendor.audio.hw.aac.encoder=true
-
+#Huaqin add by xuhaigen for 1173921 at 20180328 begin
+#Disable FM a2dp concurrency
+PRODUCT_PROPERTY_OVERRIDES += \
+vendor.fm.a2dp.conc.disabled=false
+#Huaqin add by xuhaigen for 1173921 at 20180328 end
 #audio becoming noisy intent broadcast delay
 PRODUCT_PROPERTY_OVERRIDES += \
 audio.sys.noisy.broadcast.delay=600
